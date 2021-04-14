@@ -6,11 +6,9 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
-    <RoomProvider>
-      <Router>
-        <App />
-      </Router>
-    </RoomProvider>
+    <Router>
+      <App />
+    </Router>
   </React.StrictMode>,
   document.getElementById("root")
 );
