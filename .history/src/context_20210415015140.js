@@ -65,7 +65,12 @@ export const RoomProvider = ({ children }) => {
     const name = target.name;
     console.log(name, value);
 
-    //setdata({ [name]: value }, filterRooms());
+    setdata(
+      {
+        [name]: value,
+      },
+      filterRooms()
+    );
   };
   const filterRooms = () => {
     let {

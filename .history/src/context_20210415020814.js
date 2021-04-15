@@ -51,7 +51,7 @@ export const RoomProvider = ({ children }) => {
       maxPrice,
       maxSize,
     });
-  }, [setdata]);
+  }, [data]);
 
   const getRoom = (slug) => {
     let tempRooms = [...data.rooms];

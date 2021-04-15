@@ -51,7 +51,7 @@ export const RoomProvider = ({ children }) => {
       maxPrice,
       maxSize,
     });
-  }, [setdata]);
+  });
 
   const getRoom = (slug) => {
     let tempRooms = [...data.rooms];
@@ -65,7 +65,12 @@ export const RoomProvider = ({ children }) => {
     const name = target.name;
     console.log(name, value);
 
-    //setdata({ [name]: value }, filterRooms());
+    setdata(
+      {
+        [name]: value,
+      },
+      filterRooms()
+    );
   };
   const filterRooms = () => {
     let {
@@ -77,7 +82,7 @@ export const RoomProvider = ({ children }) => {
       maxSize,
       breakfast,
       pets,
-    } = data;
+    } = this.state;
 
     let tempRooms = [...rooms];
     // transform values
@@ -106,7 +111,7 @@ export const RoomProvider = ({ children }) => {
     if (pets) {
       tempRooms = tempRooms.filter((room) => room.pets === true);
     }
-    setdata({
+    this.setState({
       sortedRooms: tempRooms,
     });
   };

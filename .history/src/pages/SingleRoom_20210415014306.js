@@ -1,11 +1,11 @@
 import React from "react";
 import defaultBcg from "../images/room-1.jpeg";
-import Hero from "../Components/Hero";
+import Hero from "../components/Hero";
 import Banner from "../Components/Banner";
 import { Link, useParams } from "react-router-dom";
 import { useData } from "../context";
 
-import StyledHero from "../Components/StyledHero";
+import StyledHero from "../components/StyledHero";
 
 const SingleRoom = () => {
   const { slug } = useParams();

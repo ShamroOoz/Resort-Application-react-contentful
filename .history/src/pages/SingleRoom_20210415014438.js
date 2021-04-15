@@ -5,7 +5,7 @@ import Banner from "../Components/Banner";
 import { Link, useParams } from "react-router-dom";
 import { useData } from "../context";
 
-import StyledHero from "../Components/StyledHero";
+import StyledHero from "../components/StyledHero";
 
 const SingleRoom = () => {
   const { slug } = useParams();
