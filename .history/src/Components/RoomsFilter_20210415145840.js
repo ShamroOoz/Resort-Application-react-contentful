@@ -6,10 +6,9 @@ const getUnique = (items, value) => {
   return [...new Set(items.map((item) => item[value]))];
 };
 
-const RoomsFilter = () => {
+const RoomsFilter = ({ rooms }) => {
   // react hooks
   const {
-    rooms,
     handleChange,
     type,
     capacity,

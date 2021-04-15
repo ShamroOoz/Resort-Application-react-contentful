@@ -1,13 +1,11 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import defaultImg from "../images/room-1.jpeg";
 import PropTypes from "prop-types";
-
-const Room = ({ room }) => useMemo(() => getRoom(room), [room]);
-
-const getRoom = (room) => {
+import { memo } from "react";
+const Room = memo(({ room }) => {
   const { name, slug, images, price } = room;
-
+  // console.log(name);
   return (
     <article className="room">
       <div className="img-container">
@@ -23,7 +21,7 @@ const getRoom = (room) => {
       <p className="room-info">{name}</p>
     </article>
   );
-};
+});
 
 Room.propTypes = {
   room: PropTypes.shape({

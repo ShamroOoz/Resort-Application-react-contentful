@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import items from "./data";
 
 const RoomContext = createContext();
@@ -15,7 +8,6 @@ const initialState = {
   sortedRooms: [],
   featuredRooms: [],
   loading: true,
-  //
   type: "all",
   capacity: 1,
   price: 0,
@@ -76,14 +68,10 @@ export const RoomProvider = ({ children }) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
-    setdata((prevdata) => ({
-      ...prevdata,
-      [name]: value,
-    }));
-    filterRooms();
+    setdata({ ...data, [name]: value }, filterRooms());
   };
-
-  const filterRooms = useCallback(() => {
+  const filterRooms = () => {
+    console.log(data);
     let {
       rooms,
       type,
@@ -122,11 +110,11 @@ export const RoomProvider = ({ children }) => {
     if (pets) {
       tempRooms = tempRooms.filter((room) => room.pets === true);
     }
-    setdata((prevData) => ({
-      ...prevData,
+    setdata({
+      ...data,
       sortedRooms: tempRooms,
-    }));
-  }, [data]);
+    });
+  };
 
   return (
     <RoomContext.Provider
@@ -136,7 +124,7 @@ export const RoomProvider = ({ children }) => {
         handleChange: handleChange,
       }}
     >
-      {children}
+      {!data?.loading && children}
     </RoomContext.Provider>
   );
 };

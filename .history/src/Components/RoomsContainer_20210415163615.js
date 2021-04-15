@@ -6,6 +6,7 @@ import RoomsList from "./RoomsList";
 
 export default function RoomContainer() {
   const { loading, sortedRooms } = useData();
+  console.log(sortedRooms);
   if (loading) {
     return <Loading />;
   }

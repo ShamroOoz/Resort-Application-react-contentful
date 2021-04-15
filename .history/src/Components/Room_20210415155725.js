@@ -3,7 +3,12 @@ import { Link } from "react-router-dom";
 import defaultImg from "../images/room-1.jpeg";
 import PropTypes from "prop-types";
 
-const Room = ({ room }) => useMemo(() => getRoom(room), [room]);
+//const Room = ({ room }) => useMemo(getRoom(room), [getRoom]);
+
+const Room = ({ room }) =>
+  useMemo(() => {
+    return getRoom(room);
+  }, [room]);
 
 const getRoom = (room) => {
   const { name, slug, images, price } = room;

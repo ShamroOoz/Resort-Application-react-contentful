@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import defaultBcg from "../images/room-1.jpeg";
 import Banner from "../Components/Banner";
 import { Link, useParams } from "react-router-dom";
@@ -38,7 +38,7 @@ const SingleRoom = () => {
 
   return (
     <>
-      <StyledHero img={main || defaultBcg}>
+      <StyledHero img={images[0] || defaultBcg}>
         <Banner title={`${name} room`}>
           <Link to="/rooms" className="btn-primary">
             back to rooms

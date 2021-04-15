@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import items from "./data";
 
 const RoomContext = createContext();
@@ -15,7 +8,6 @@ const initialState = {
   sortedRooms: [],
   featuredRooms: [],
   loading: true,
-  //
   type: "all",
   capacity: 1,
   price: 0,
@@ -64,7 +56,7 @@ export const RoomProvider = ({ children }) => {
       }
     }
     fetchData();
-  }, []);
+  }, [setdata]);
 
   const getRoom = (slug) => {
     let tempRooms = [...data.rooms];
@@ -76,57 +68,52 @@ export const RoomProvider = ({ children }) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
-    setdata((prevdata) => ({
-      ...prevdata,
-      [name]: value,
-    }));
-    filterRooms();
+    setdata({ ...data, [name]: value }, filterRooms());
   };
+  const filterRooms = () => {
+    console.log(data);
+    // let {
+    //   rooms,
+    //   type,
+    //   capacity,
+    //   price,
+    //   minSize,
+    //   maxSize,
+    //   breakfast,
+    //   pets,
+    // } = data;
 
-  const filterRooms = useCallback(() => {
-    let {
-      rooms,
-      type,
-      capacity,
-      price,
-      minSize,
-      maxSize,
-      breakfast,
-      pets,
-    } = data;
-
-    let tempRooms = [...rooms];
-    // transform values
-    // get capacity
-    capacity = parseInt(capacity);
-    price = parseInt(price);
-    // filter by type
-    if (type !== "all") {
-      tempRooms = tempRooms.filter((room) => room.type === type);
-    }
-    // filter by capacity
-    if (capacity !== 1) {
-      tempRooms = tempRooms.filter((room) => room.capacity >= capacity);
-    }
-    // filter by price
-    tempRooms = tempRooms.filter((room) => room.price <= price);
-    //filter by size
-    tempRooms = tempRooms.filter(
-      (room) => room.size >= minSize && room.size <= maxSize
-    );
-    //filter by breakfast
-    if (breakfast) {
-      tempRooms = tempRooms.filter((room) => room.breakfast === true);
-    }
-    //filter by pets
-    if (pets) {
-      tempRooms = tempRooms.filter((room) => room.pets === true);
-    }
-    setdata((prevData) => ({
-      ...prevData,
-      sortedRooms: tempRooms,
-    }));
-  }, [data]);
+    // let tempRooms = [...rooms];
+    // // transform values
+    // // get capacity
+    // capacity = parseInt(capacity);
+    // price = parseInt(price);
+    // // filter by type
+    // if (type !== "all") {
+    //   tempRooms = tempRooms.filter((room) => room.type === type);
+    // }
+    // // filter by capacity
+    // if (capacity !== 1) {
+    //   tempRooms = tempRooms.filter((room) => room.capacity >= capacity);
+    // }
+    // // filter by price
+    // tempRooms = tempRooms.filter((room) => room.price <= price);
+    // //filter by size
+    // tempRooms = tempRooms.filter(
+    //   (room) => room.size >= minSize && room.size <= maxSize
+    // );
+    // //filter by breakfast
+    // if (breakfast) {
+    //   tempRooms = tempRooms.filter((room) => room.breakfast === true);
+    // }
+    // //filter by pets
+    // if (pets) {
+    //   tempRooms = tempRooms.filter((room) => room.pets === true);
+    // }
+    // setdata({
+    //   sortedRooms: tempRooms,
+    // });
+  };
 
   return (
     <RoomContext.Provider
@@ -136,7 +123,7 @@ export const RoomProvider = ({ children }) => {
         handleChange: handleChange,
       }}
     >
-      {children}
+      {!data?.loading && children}
     </RoomContext.Provider>
   );
 };

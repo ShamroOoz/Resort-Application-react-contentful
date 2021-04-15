@@ -1,31 +1,8 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import items from "./data";
 
 const RoomContext = createContext();
 
-const initialState = {
-  rooms: [],
-  sortedRooms: [],
-  featuredRooms: [],
-  loading: true,
-  //
-  type: "all",
-  capacity: 1,
-  price: 0,
-  minPrice: 0,
-  maxPrice: 0,
-  minSize: 0,
-  maxSize: 0,
-  breakfast: false,
-  pets: false,
-};
 export const RoomProvider = ({ children }) => {
   const formatData = (items) => {
     let tempItems = items.map((item) => {
@@ -39,10 +16,25 @@ export const RoomProvider = ({ children }) => {
   };
 
   //Hooks
-  const [data, setdata] = useState(initialState);
+  const [data, setdata] = useState({
+    rooms: [],
+    sortedRooms: [],
+    featuredRooms: [],
+    loading: true,
+    type: "all",
+    capacity: 1,
+    price: 0,
+    minPrice: 0,
+    maxPrice: 0,
+    minSize: 0,
+    maxSize: 0,
+    breakfast: false,
+    pets: false,
+  });
 
   useEffect(() => {
     async function fetchData() {
+      console.log(data.loading);
       try {
         let rooms = await formatData(items);
         let featuredRooms = rooms.filter((room) => room.featured === true);
@@ -76,57 +68,52 @@ export const RoomProvider = ({ children }) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
-    setdata((prevdata) => ({
-      ...prevdata,
-      [name]: value,
-    }));
-    filterRooms();
+    setdata({ ...data, [name]: value }, filterRooms());
   };
+  const filterRooms = () => {
+    console.log(data);
+    // let {
+    //   rooms,
+    //   type,
+    //   capacity,
+    //   price,
+    //   minSize,
+    //   maxSize,
+    //   breakfast,
+    //   pets,
+    // } = data;
 
-  const filterRooms = useCallback(() => {
-    let {
-      rooms,
-      type,
-      capacity,
-      price,
-      minSize,
-      maxSize,
-      breakfast,
-      pets,
-    } = data;
-
-    let tempRooms = [...rooms];
-    // transform values
-    // get capacity
-    capacity = parseInt(capacity);
-    price = parseInt(price);
-    // filter by type
-    if (type !== "all") {
-      tempRooms = tempRooms.filter((room) => room.type === type);
-    }
-    // filter by capacity
-    if (capacity !== 1) {
-      tempRooms = tempRooms.filter((room) => room.capacity >= capacity);
-    }
-    // filter by price
-    tempRooms = tempRooms.filter((room) => room.price <= price);
-    //filter by size
-    tempRooms = tempRooms.filter(
-      (room) => room.size >= minSize && room.size <= maxSize
-    );
-    //filter by breakfast
-    if (breakfast) {
-      tempRooms = tempRooms.filter((room) => room.breakfast === true);
-    }
-    //filter by pets
-    if (pets) {
-      tempRooms = tempRooms.filter((room) => room.pets === true);
-    }
-    setdata((prevData) => ({
-      ...prevData,
-      sortedRooms: tempRooms,
-    }));
-  }, [data]);
+    // let tempRooms = [...rooms];
+    // // transform values
+    // // get capacity
+    // capacity = parseInt(capacity);
+    // price = parseInt(price);
+    // // filter by type
+    // if (type !== "all") {
+    //   tempRooms = tempRooms.filter((room) => room.type === type);
+    // }
+    // // filter by capacity
+    // if (capacity !== 1) {
+    //   tempRooms = tempRooms.filter((room) => room.capacity >= capacity);
+    // }
+    // // filter by price
+    // tempRooms = tempRooms.filter((room) => room.price <= price);
+    // //filter by size
+    // tempRooms = tempRooms.filter(
+    //   (room) => room.size >= minSize && room.size <= maxSize
+    // );
+    // //filter by breakfast
+    // if (breakfast) {
+    //   tempRooms = tempRooms.filter((room) => room.breakfast === true);
+    // }
+    // //filter by pets
+    // if (pets) {
+    //   tempRooms = tempRooms.filter((room) => room.pets === true);
+    // }
+    // setdata({
+    //   sortedRooms: tempRooms,
+    // });
+  };
 
   return (
     <RoomContext.Provider

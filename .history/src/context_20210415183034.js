@@ -76,6 +76,7 @@ export const RoomProvider = ({ children }) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
+    console.log(name, value);
     setdata((prevdata) => ({
       ...prevdata,
       [name]: value,
@@ -83,7 +84,7 @@ export const RoomProvider = ({ children }) => {
     filterRooms();
   };
 
-  const filterRooms = useCallback(() => {
+  const filterRooms = useMemo(() => {
     let {
       rooms,
       type,

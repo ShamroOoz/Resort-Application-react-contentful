@@ -1,11 +1,4 @@
-import React, {
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import items from "./data";
 
 const RoomContext = createContext();
@@ -15,7 +8,6 @@ const initialState = {
   sortedRooms: [],
   featuredRooms: [],
   loading: true,
-  //
   type: "all",
   capacity: 1,
   price: 0,
@@ -26,45 +18,40 @@ const initialState = {
   breakfast: false,
   pets: false,
 };
+
+const formatData = (items) => {
+  let tempItems = items.map((item) => {
+    let id = item.sys.id;
+    let images = item.fields.images.map((image) => image.fields.file.url);
+
+    let room = { ...item.fields, images, id };
+    return room;
+  });
+  return tempItems;
+};
+
 export const RoomProvider = ({ children }) => {
-  const formatData = (items) => {
-    let tempItems = items.map((item) => {
-      let id = item.sys.id;
-      let images = item.fields.images.map((image) => image.fields.file.url);
-
-      let room = { ...item.fields, images, id };
-      return room;
-    });
-    return tempItems;
-  };
-
-  //Hooks
+  //
   const [data, setdata] = useState(initialState);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        let rooms = await formatData(items);
-        let featuredRooms = rooms.filter((room) => room.featured === true);
-        //
-        let maxPrice = Math.max(...rooms.map((item) => item.price));
-        let maxSize = Math.max(...rooms.map((item) => item.size));
-        setdata((precData) => ({
-          ...precData,
-          rooms,
-          featuredRooms,
-          sortedRooms: rooms,
-          loading: false,
-          price: maxPrice,
-          maxPrice,
-          maxSize,
-        }));
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchData();
-  }, []);
+    let rooms = formatData(items);
+    let featuredRooms = rooms.filter((room) => room.featured === true);
+    //
+    let maxPrice = Math.max(...rooms.map((item) => item.price));
+    let maxSize = Math.max(...rooms.map((item) => item.size));
+    setdata({
+      ...data,
+      rooms,
+      featuredRooms,
+      sortedRooms: rooms,
+      loading: false,
+      //
+      price: maxPrice,
+      maxPrice,
+      maxSize,
+    });
+  }, [setdata]);
 
   const getRoom = (slug) => {
     let tempRooms = [...data.rooms];
@@ -76,14 +63,10 @@ export const RoomProvider = ({ children }) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
-    setdata((prevdata) => ({
-      ...prevdata,
-      [name]: value,
-    }));
-    filterRooms();
+    console.log(name, value);
+    setdata({ ...data, [name]: value });
   };
-
-  const filterRooms = useCallback(() => {
+  const filterRooms = () => {
     let {
       rooms,
       type,
@@ -122,11 +105,10 @@ export const RoomProvider = ({ children }) => {
     if (pets) {
       tempRooms = tempRooms.filter((room) => room.pets === true);
     }
-    setdata((prevData) => ({
-      ...prevData,
+    setdata({
       sortedRooms: tempRooms,
-    }));
-  }, [data]);
+    });
+  };
 
   return (
     <RoomContext.Provider

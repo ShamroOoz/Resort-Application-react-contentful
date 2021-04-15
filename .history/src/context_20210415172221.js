@@ -76,57 +76,60 @@ export const RoomProvider = ({ children }) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
-    setdata((prevdata) => ({
-      ...prevdata,
-      [name]: value,
-    }));
-    filterRooms();
-  };
-
-  const filterRooms = useCallback(() => {
-    let {
-      rooms,
-      type,
-      capacity,
-      price,
-      minSize,
-      maxSize,
-      breakfast,
-      pets,
-    } = data;
-
-    let tempRooms = [...rooms];
-    // transform values
-    // get capacity
-    capacity = parseInt(capacity);
-    price = parseInt(price);
-    // filter by type
-    if (type !== "all") {
-      tempRooms = tempRooms.filter((room) => room.type === type);
-    }
-    // filter by capacity
-    if (capacity !== 1) {
-      tempRooms = tempRooms.filter((room) => room.capacity >= capacity);
-    }
-    // filter by price
-    tempRooms = tempRooms.filter((room) => room.price <= price);
-    //filter by size
-    tempRooms = tempRooms.filter(
-      (room) => room.size >= minSize && room.size <= maxSize
+    console.log(name, value);
+    setdata(
+      (prevdata) => ({
+        ...prevdata,
+        [name]: value,
+      }),
+      change()
     );
-    //filter by breakfast
-    if (breakfast) {
-      tempRooms = tempRooms.filter((room) => room.breakfast === true);
-    }
-    //filter by pets
-    if (pets) {
-      tempRooms = tempRooms.filter((room) => room.pets === true);
-    }
-    setdata((prevData) => ({
-      ...prevData,
-      sortedRooms: tempRooms,
-    }));
-  }, [data]);
+  };
+  const change = useMemo(() => 
+    console.log(data);
+  , [data]);
+
+  // let tempRooms = [...rooms];
+  // if (value !== "all") {
+  //   tempRooms = tempRooms.filter((room) => room.type === value);
+  // }
+
+  //   if (value !== 1) {
+  //     tempRooms = tempRooms.filter((room) => room.capacity >= value);
+  //   }
+
+  // setdata((prevData) => ({
+  //   ...prevData,
+  //   sortedRooms: tempRooms,
+  // }));
+
+  //   capacity = parseInt(capacity);
+  //   price = parseInt(price);
+  //   // filter by type
+
+  //   // filter by capacity
+  //   if (capacity !== 1) {
+  //     tempRooms = tempRooms.filter((room) => room.capacity >= capacity);
+  //   }
+  //   // filter by price
+  //   tempRooms = tempRooms.filter((room) => room.price <= price);
+  //   //filter by size
+  //   tempRooms = tempRooms.filter(
+  //     (room) => room.size >= minSize && room.size <= maxSize
+  //   );
+  //   //filter by breakfast
+  //   if (breakfast) {
+  //     tempRooms = tempRooms.filter((room) => room.breakfast === true);
+  //   }
+  //   //filter by pets
+  //   if (pets) {
+  //     tempRooms = tempRooms.filter((room) => room.pets === true);
+  //   }
+  //   setdata((prevData) => ({
+  //     ...prevData,
+  //     sortedRooms: tempRooms,
+  //   }));
+  // };
 
   return (
     <RoomContext.Provider

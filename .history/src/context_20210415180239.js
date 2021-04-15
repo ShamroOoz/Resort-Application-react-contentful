@@ -76,14 +76,14 @@ export const RoomProvider = ({ children }) => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
-    setdata((prevdata) => ({
+    console.log(name, value);
+    return setdata((prevdata) => ({
       ...prevdata,
       [name]: value,
     }));
-    filterRooms();
   };
-
-  const filterRooms = useCallback(() => {
+  useCallback(() => console.log(data), [data]);
+  const filterRooms = () => {
     let {
       rooms,
       type,
@@ -122,11 +122,11 @@ export const RoomProvider = ({ children }) => {
     if (pets) {
       tempRooms = tempRooms.filter((room) => room.pets === true);
     }
-    setdata((prevData) => ({
+    return setdata((prevData) => ({
       ...prevData,
       sortedRooms: tempRooms,
     }));
-  }, [data]);
+  };
 
   return (
     <RoomContext.Provider

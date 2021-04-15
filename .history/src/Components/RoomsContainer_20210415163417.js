@@ -5,14 +5,14 @@ import RoomsFilter from "./RoomsFilter";
 import RoomsList from "./RoomsList";
 
 export default function RoomContainer() {
-  const { loading, sortedRooms } = useData();
+  const { loading, setRoom, sortedRooms } = useData();
   if (loading) {
     return <Loading />;
   }
   return (
     <>
       <RoomsFilter />
-      <RoomsList rooms={sortedRooms} />
+      <RoomsList rooms={sortedRooms} setRoom={setRoom} />
     </>
   );
 }

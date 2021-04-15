@@ -122,10 +122,11 @@ export const RoomProvider = ({ children }) => {
     if (pets) {
       tempRooms = tempRooms.filter((room) => room.pets === true);
     }
-    setdata((prevData) => ({
-      ...prevData,
-      sortedRooms: tempRooms,
-    }));
+    if ([...tempRooms] !== [...rooms])
+      return setdata((prevData) => ({
+        ...prevData,
+        sortedRooms: tempRooms,
+      }));
   }, [data]);
 
   return (
